@@ -1,4 +1,4 @@
 package com.microservice.depotdirect.controller;
 
-public class microserviceControllerTest {
+public class MicroserviceControllerTest {
 }

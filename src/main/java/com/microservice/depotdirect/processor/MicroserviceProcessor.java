@@ -4,8 +4,13 @@ import com.microservice.depotdirect.dto.InputStudentDto;
 import com.microservice.depotdirect.dto.OutputStudentDto;
 import org.springframework.stereotype.Service;
 
+import java.util.HashMap;
+import java.util.Map;
+
 @Service
 public class MicroserviceProcessor {
+
+    public Map<String, OutputStudentDto> outputMap = new HashMap<>();
 
     public int squareOfValue(int input) {
         int output = 0;
@@ -26,15 +31,48 @@ public class MicroserviceProcessor {
     }
 
     public OutputStudentDto studentMarks(InputStudentDto inputStudentDto) throws Exception {
-        MicroserviceProcessor microserviceProcessor=new MicroserviceProcessor();
         OutputStudentDto outputStudentDto = new OutputStudentDto();
         outputStudentDto.setStudentName(inputStudentDto.getStudentName());
-        outputStudentDto.setRollNo(inputStudentDto.getRollNo());
+        outputStudentDto.setRollNo( inputStudentDto.getRollNo());
+        outputStudentDto.setMarkList(inputStudentDto.getMarkList());
+
         try {
-        outputStudentDto.setMarksScored(microserviceProcessor.sumOfVariables(inputStudentDto.getMarkList()).toString());
+            int totalMarks = sumOfVariables(inputStudentDto.getMarkList());
+            outputStudentDto.setMarksScored(String.valueOf(totalMarks));
+            outputStudentDto.setEligibility(getEligibility(totalMarks));
         } catch (Exception e) {
-            throw new Exception("Datatype Exception");
+            throw e;
         }
+
         return outputStudentDto;
+    }
+
+    private boolean getEligibility(Integer marksScored) {
+        boolean eligibility = false;
+        if(marksScored>= 400) eligibility = true;
+        return eligibility;
+    }
+
+    public Map<String, OutputStudentDto> getStudentMarksInMap(InputStudentDto inputStudentDto) throws Exception {
+        try {
+            outputMap.put(inputStudentDto.getRollNo(), studentMarks(inputStudentDto));
+        }catch(Exception e){
+            throw  e;
+        }
+
+        return outputMap;
+    }
+
+    public String getOutputMap(String rollNo) {
+        if(rollNo == null || rollNo.isEmpty()){
+            return outputMap.toString();
+        }
+        else if (outputMap.containsKey(rollNo)){
+            return outputMap.get(rollNo).toString();
+        }
+        else
+            {
+             return "Record not Found" ;
+        }
     }
 }

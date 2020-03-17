@@ -4,9 +4,14 @@ import com.microservice.depotdirect.dto.InputStudentDto;
 import com.microservice.depotdirect.dto.OutputStudentDto;
 import com.microservice.depotdirect.processor.MicroserviceProcessor;
 import io.swagger.annotations.Api;
+import org.graalvm.compiler.graph.Node;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Required;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.HashMap;
+import java.util.Map;
 
 @Api(value = "Microservice")
 @RestController
@@ -44,9 +49,20 @@ public class MicroserviceController {
 
     @PostMapping(path = "/v1/studentMarks")
     public OutputStudentDto studentMarks(InputStudentDto inputStudentDto) throws Exception {
-        OutputStudentDto outputStudentDto = new OutputStudentDto();
+        OutputStudentDto outputStudentDto;
         outputStudentDto = microserviceProcessor.studentMarks(inputStudentDto);
         return outputStudentDto;
     }
 
+    @PostMapping(path = "/v1/studentMarksInMap")
+    public Map <String,OutputStudentDto> studentMarksInMap (InputStudentDto inputStudentDto) throws Exception {
+        Map<String,OutputStudentDto> outputMap;
+        outputMap = microserviceProcessor.getStudentMarksInMap(inputStudentDto);
+        return outputMap;
+    }
+
+    @GetMapping(value = "/v1/getStudentMarksInMap" )
+    public  String getStudentMarksInMap(@RequestParam( value="rollNo", required = false)  String rollNo ){
+            return microserviceProcessor.getOutputMap(rollNo);
+    }
 }

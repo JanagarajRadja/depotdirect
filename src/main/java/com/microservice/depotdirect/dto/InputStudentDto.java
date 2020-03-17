@@ -6,6 +6,7 @@ import lombok.*;
 @Data
 @Getter
 @Setter
+@ToString
 public class InputStudentDto {
     private String studentName;
     private String rollNo;

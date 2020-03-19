@@ -10,6 +10,5 @@ import lombok.*;
 public class InputStudentDto {
     private String studentName;
     private String rollNo;
-    private String [] markList;
-
+    private String[] markList;
 }

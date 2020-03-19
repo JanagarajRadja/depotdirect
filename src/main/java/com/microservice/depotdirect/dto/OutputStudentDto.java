@@ -9,9 +9,9 @@ import lombok.*;
 @Getter
 @ToString
 public class OutputStudentDto {
-        private String studentName;
-        private String rollNo;
-        private String [] markList;
-        private String marksScored;
-        private boolean eligibility;
-    }
+    private String studentName;
+    private String rollNo;
+    private String[] markList;
+    private String marksScored;
+    private boolean eligibility;
+}
